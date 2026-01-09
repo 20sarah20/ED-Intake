@@ -80,16 +80,16 @@ const read_vars_from_file = async () => {
     const admin_role = await guild.roles.fetch(value.admin);
 
     let channels = {};
-    await Object.keys(value.channels).forEach(async (user) => {
-      let user_channels = value.channels[user];
-      channels[user] = {};
-      channels[user].private = await private_channel.threads.fetch(
-        user_channels.private,
-      );
-      channels[user].public = await public_channel.threads.fetch(
-        user_channels.public,
-      );
-    });
+    await Promise.all(
+      Object.keys(value.channels).map(async (user) => {
+        const user_channels = value.channels[user];
+
+        channels[user] = {
+          private: await private_channel.threads.fetch(user_channels.private),
+          public: await public_channel.threads.fetch(user_channels.public),
+        };
+      }),
+    );
 
     await guild_vars.set(key, {
       setup: value.setup,
