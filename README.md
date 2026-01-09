@@ -8,3 +8,9 @@ run `npm -i`
 ###Running
 
 run `node index.js`
+
+###TODO
+
+dockerize project
+
+setup github auto startup? maybe? probably not
